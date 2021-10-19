@@ -10,10 +10,10 @@ void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size
   a->block_size = block_size;
   a->levels = log2(max_size / block_size);
  //grandezza, espressa in bytes, necessaria per la bitmap a gestire tutti i livelli, considerando che ogni bit rappresenta un blocco
-  int bytes = ((1<<(levels+1)) – 1) / 8 + 1;
-  Assert(bitmap_size>=bytes);
+  int bytes = ((1<<(a->levels+1)) – 1) / 8 + 1;
+  assert(bitmap_size>=bytes);
   BitMap_new(a->bitmap, bytes, bitmap_buffer);
-
+}
   
   int Find_level(BuddyAllocator* a, int size){
      assert(size < a->max_size);
@@ -27,4 +27,13 @@ void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size
         }
    	return lvl;
     }
+}
+
+
+void Set_child(BuddyAllocator* a, int bit, int value) {
+	if (bit < (1<<(a->levels+1)-1)) {
+		Bitmap_set(a->bitmap, bit, value);
+		Set_child(a, bit*2+1, value);
+		Set_child(a, bit*2+2, value);
+	}
 }
