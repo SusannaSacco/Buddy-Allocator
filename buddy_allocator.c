@@ -13,3 +13,18 @@ void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size
   int bytes = ((1<<(levels+1)) – 1) / 8 + 1;
   Assert(bitmap_size>=bytes);
   BitMap_new(a->bitmap, bytes, bitmap_buffer);
+
+  
+  int Find_level(BuddyAllocator* a, int size){
+     assert(size < a->max_size);
+     if (size <= a->block_size) return a->levels;
+     else {
+        int lvl= 0;
+        int comp = buff->max_size / 2;
+      	while (size <= comp){
+		      lvl++;
+		      comp = comp / 2;
+        }
+   	return lvl;
+    }
+}
