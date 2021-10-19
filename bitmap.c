@@ -19,7 +19,7 @@ void BitMap_set(BitMap* bitmap, int n, int value) {
 }
 
  int BitMap_get(BitMap* bitmap, int n) {
-    int byte = i / 8;
+    int byte = n / 8;
     assert(byte < bitmap->size);
     return bitmap->buffer[byte] & (1 << (i & 7)) ? 1 : 0;
 }
