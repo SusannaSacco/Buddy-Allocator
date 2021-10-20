@@ -30,10 +30,20 @@ void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size
 }
 
 
-void Set_child(BuddyAllocator* a, int bit, int value) {
+void Set_children(BuddyAllocator* a, int bit, int value) {
 	if (bit < (1<<(a->levels+1)-1)) {
 		Bitmap_set(a->bitmap, bit, value);
 		Set_child(a, bit*2+1, value);
 		Set_child(a, bit*2+2, value);
+	}
+}
+
+
+void Set_parent(BuddyAllocator* a, int bit, int value) {
+	Bitmap_set(a->bitmap, bit, value);
+	if (bit != 0) {
+	  if (bit%2 == 0) bit--;
+          bit = (bit-1)/2;
+	  Set_parent(a, bit, value);
 	}
 }
