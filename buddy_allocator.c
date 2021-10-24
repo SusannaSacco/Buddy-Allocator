@@ -50,9 +50,23 @@ void Set_parent(BuddyAllocator* a, int bit, int value) {
 
 
 void* BuddyAllocator_alloc(BuddyAllocator* a, int size) {
-int level = find_level(a, size);
-from = pow(2, level)-1;
-to = pow(2, level+1)-1;
-for(; from<to, from++) {
+   size += sizeof(int)
+   int level = find_level(a, size);
+   from = pow(2,level)-1;
+   to = pow(2,level+1)-1;
+   int i = 0;
+   for(; from<to, from++) {
+       if(Bitmap_get(a->bitmap, from)) {
+           Set_parent(a, from, 1);
+           Set_children(a, from, 1);
+           int block = a->max_size/(pow(2,level)); 
+           char* ptr=a->memory+i*block;
+           *((int*)ptr)=from; 
+           return (void*)(ptr + 4);
+           } 
+       i++;
     }
+    printf("ERRORE: Non c’è memoria libera disponibile\n\n");
+    return NULL;
 }
+
