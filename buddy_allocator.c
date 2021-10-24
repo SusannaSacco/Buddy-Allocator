@@ -66,9 +66,33 @@ void* BuddyAllocator_alloc(BuddyAllocator* a, int size) {
            } 
        i++;
     }
-    printf("ERRORE: Non c’è memoria libera disponibile\n\n");
+    printf("ERRORE: Non c’è memoria libera disponibile\n");
     return NULL;
 }
 
 
-void BuddyAllocator_free(BuddyAllocator* a, void* ptr);
+void BuddyAllocator_free(BuddyAllocator* a, void* ptr) {
+    if (ptr==NULL){
+        printf("ERRORE: puntatore vuoto\n");
+        return;
+    }
+    int i=*(int*)((char*)ptr-sizeof(int));
+    if (i>pow(2,a->levels+1)){
+       printf("ERRORE: Indice non valido\n");
+       return;
+    }
+    Bitmap_set(a->bitmap, i, 0);
+    Set_children(a, i, 0);
+    //libero il genitore se il blocco fratello è già vuoto, così si riuniscono
+    int iBuddy = i;
+    if(i%2==0) {
+       iBuddy--; 
+    } else {
+       iBuddy++; 
+    }
+   while (i==0 &&  Bitmap_get(a->bitmap,iBuddy)==0){
+      iParent = (i-1)/2;
+      Bitmap_set(a->bitmap,iParent,0);
+      i=iParent;
+  }
+}
