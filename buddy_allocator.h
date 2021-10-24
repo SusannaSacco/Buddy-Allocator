@@ -4,14 +4,14 @@
 
 
 typedef struct {
-  unsigned char* memory;
+  char* memory;
   int levels;
   int max_size;
   int block_size;
   BitMap* bitmap;
   } BuddyAllocator;
 
-void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size,  int block_size, unsigned char* bitmap_buffer,  int bitmap_size);
+void BuddyAllocator_new(BuddyAllocator* a, char* memory,  int max_size,  int block_size, char* bitmap_buffer,  int bitmap_size);
 
 int Find_level(BuddyAllocator* a, int size);
 
