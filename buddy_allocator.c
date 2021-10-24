@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "buddy_allocator.h"
 
-void BuddyAllocator_new(BuddyAllocator* a, unsigned  char* memory,  int max_size,  int block_size, unsigned char* bitmap_buffer,  int bitmap_size){
+void BuddyAllocator_new(BuddyAllocator* a, char* memory,  int max_size,  int block_size, char* bitmap_buffer,  int bitmap_size){
   a->memory = memory;
   a->max_size  = max_size;
   a->block_size = block_size;
@@ -70,3 +70,5 @@ void* BuddyAllocator_alloc(BuddyAllocator* a, int size) {
     return NULL;
 }
 
+
+void BuddyAllocator_free(BuddyAllocator* a, void* ptr);
