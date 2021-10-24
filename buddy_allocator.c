@@ -47,3 +47,12 @@ void Set_parent(BuddyAllocator* a, int bit, int value) {
 	  Set_parent(a, bit, value);
 	}
 }
+
+
+void* BuddyAllocator_alloc(BuddyAllocator* a, int size) {
+int level = find_level(a, size);
+from = pow(2, level)-1;
+to = pow(2, level+1)-1;
+for(; from<to, from++) {
+    }
+}
