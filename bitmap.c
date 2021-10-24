@@ -24,3 +24,25 @@ void BitMap_set(BitMap* bitmap, int n, int value) {
     assert(byte < bitmap->size);
     return bitmap->buffer[byte] & (1 << (i & 7)) ? 1 : 0;
 }
+
+
+void Bitmap_print(Bitmap* bitmap) {
+int lvl = 0;
+for (int i=0; i<bitmap->bits; i++){
+    if (i==(pow(2,lvl)-1)){
+      printf("level %d: ",lvl);
+    }
+    if (i==(pow(2,lvl+1)-2)){
+      printf("%d ", Bitmap_get(bitmap,i));
+      printf("\n");
+      lvl++;
+    }
+    else{ 
+     printf("%d ", Bitmap_get(bitmap,i));
+     for (int n=0; n<bitmap->bits/pow(2,lvl+1); n++){
+        printf("  ");
+      }
+    }
+  }
+printf("\n\n");
+  }
