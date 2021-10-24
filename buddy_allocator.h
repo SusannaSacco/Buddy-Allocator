@@ -18,3 +18,7 @@ int Find_level(BuddyAllocator* a, int size);
 void Set_children(BuddyAllocator* a, int bit, int value);
 
 void Set_parent(BuddyAllocator* a, int bit, int value);
+
+void* BuddyAllocator_alloc(BuddyAllocator* a, int size);
+
+void BuddyAllocator_free(BuddyAllocator* a, void* ptr);
