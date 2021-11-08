@@ -7,7 +7,7 @@ typedef struct {
   int bits;
 } BitMap;
 
-void BitMap_new(BitMap *bitmap, int size, char* buffer);
+void BitMap_new(BitMap *bitmap, int bits, char* buffer);
 
 void BitMap_set(BitMap *bitmap, int n, int value);
 
