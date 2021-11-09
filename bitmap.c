@@ -1,11 +1,13 @@
-#include "bit_map.h"
+#include "bitmap.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 void BitMap_new(BitMap* bitmap, int bits, char* buffer){
    bitmap->buffer = buffer;
    bitmap->bits = bits;
+   //calcolo la dimensione in byte
    if (bits % 8 == 0) {
       bitmap->size = bits/8; }
    else {
@@ -14,11 +16,11 @@ void BitMap_new(BitMap* bitmap, int bits, char* buffer){
 }
 
 void BitMap_set(BitMap* bitmap, int n, int value) {
-    byte = n / 8;
+    int byte = n / 8;
     assert(byte < bitmap->size);
     if (value) {
     bitmap->buffer[byte] |= 1 << (n & 7);
-} else {
+}   else {
     bitmap->buffer[byte] &= ~(1 << (n & 7));
 }
 }
@@ -30,23 +32,38 @@ void BitMap_set(BitMap* bitmap, int n, int value) {
 }
 
 
-void Bitmap_print(Bitmap* bitmap) {
-int lvl = 0;
-for (int i=0; i<bitmap->bits; i++){
+void BitMap_print(BitMap* bitmap) {
+    printf("Rappresentazione della bitmap come albero binario:\n");
+    int lvl = 0;
+    for (int i=0; i<bitmap->bits; i++){
+	//primi bit di ciascun livello
     if (i==(pow(2,lvl)-1)){
-      printf("level %d: ",lvl);
+      printf("livello %d: ",lvl);
+      for (int n=1; n<bitmap->bits/pow(2,lvl+1); n++){
+        printf(" ");
+      }
     }
+    //ultimi bit di ciascun livello
     if (i==(pow(2,lvl+1)-2)){
-      printf("%d ", Bitmap_get(bitmap,i));
+      printf("%d ", BitMap_get(bitmap,i));
       printf("\n");
       lvl++;
     }
+    //tutti i bit esclusi gli ultimi di ciascun livello
     else{ 
-     printf("%d ", Bitmap_get(bitmap,i));
-     for (int n=0; n<bitmap->bits/pow(2,lvl+1); n++){
+     printf("%d ", BitMap_get(bitmap,i));
+     for (int n=1; n<bitmap->bits/pow(2,lvl+1); n++){
         printf("  ");
       }
     }
   }
 printf("\n\n");
+  }
+  
+void BitMap_print2(BitMap* bitmap) {
+    printf("Stato corrente della bitmap:\n");
+    for (int i=0; i<bitmap->bits; i++){
+      printf("%d ", BitMap_get(bitmap,i));
+      }
+printf("\n");
   }
